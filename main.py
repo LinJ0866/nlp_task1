@@ -3,11 +3,14 @@ import shutil
 import pynlpir
 import thulac
 import pkuseg
+import jieba
+import jieba.posseg as pseg
 
 
 pynlpir.open()
 thul = thulac.thulac()
-pku = pkuseg.pkuseg() 
+pku = pkuseg.pkuseg()
+jieba.enable_paddle()
 
 # 任务底层接口，封装文件操作等底层API
 class frame:
@@ -64,6 +67,15 @@ class nlpTask(frame):
         # NLPIR
         self.NLPIRChoose = [] #['noun', 'verb', 'adjective', 'adverb']
         self.NLPIRIgnore = [None, 'preposition', 'conjunction', 'particle', '', 'punctuation mark']
+        # thu
+        self.thuChoose = []
+        self.thuIgnore = []
+        # pku
+        self.pkuChoose = []
+        self.pkuIgnore = []
+        # jieba-paddle
+        self.jiebaChoose = []
+        self.jiebaIgnore = []
 
         # 是否已加载处理完成数据
         self.isProcessed = False
@@ -106,13 +118,19 @@ class nlpTask(frame):
     # 北大分词
     def pkuSeg(self, article):
         return pku.cut(article)
-
+    
     # jieba分词
+    def jiebaSeg(self, article):
+        wordSeg = []
+        words = pseg.cut(article,use_paddle=True)
+        for word, flag in words:
+            wordSeg.append((word, flag))
+        return wordSeg
 
     # 预处理
     # 中文分词+虚词过滤
     # 参数说明
-    # mode: 使用分词工具的类型，可选参数为['NLPIR', 'thul', 'jieba']
+    # mode: 使用分词工具的类型，可选参数为['NLPIR', 'thul', 'pku', 'jieba']
     def preProcessing(self, mode):
         if os.path.exists(self.preProcessingDir):
             if self.modal('【警告】此操作将删除processing/preProcessing文件夹内所有内容。'):
@@ -139,9 +157,32 @@ class nlpTask(frame):
                             if word[1] not in self.NLPIRIgnore:
                                 saveWords.append(word[0].replace('\n', ''))
                 elif mode == 'thul':
-                    pass
+                    splitWord = self.thulSeg(fileContent)
+                    for word in splitWord:
+                        if len(self.thulChoose) != 0:
+                            if word[1] in self.thulChoose:
+                                saveWords.append(word[0].replace('\n', ''))
+                        else:
+                            if word[1] not in self.thulIgnore:
+                                saveWords.append(word[0].replace('\n', ''))
+                elif mode == 'pku':
+                    splitWord = self.pkuSeg(fileContent)
+                    for word in splitWord:
+                        if len(self.pkuChoose) != 0:
+                            if word[1] in self.pkuChoose:
+                                saveWords.append(word[0].replace('\n', ''))
+                        else:
+                            if word[1] not in self.pkuIgnore:
+                                saveWords.append(word[0].replace('\n', ''))
                 elif mode == 'jieba':
-                    pass
+                    splitWord = self.jiebaSeg(fileContent)
+                    for word in splitWord:
+                        if len(self.jiebaChoose) != 0:
+                            if word[1] in self.jiebaChoose:
+                                saveWords.append(word[0].replace('\n', ''))
+                        else:
+                            if word[1] not in self.jiebaIgnore:
+                                saveWords.append(word[0].replace('\n', ''))
                 else:
                     print('输入有误，分词失败')
                     exit(1)
@@ -163,6 +204,7 @@ if __name__ == '__main__':
 
     # print(classifyTask.thulSeg(classifyTask.readGB18030File('./data/train/1/1 (1).txt')))
     # print(classifyTask.pkuSeg(classifyTask.readGB18030File('./data/train/1/1 (1).txt')))
+    # print(classifyTask.jiebaSeg(classifyTask.readGB18030File('./data/train/1/1 (1).txt')))
     
-    classifyTask.preProcessing('NLPIR')
-    classifyTask.process()
+    # classifyTask.preProcessing('NLPIR')
+    # classifyTask.process()
