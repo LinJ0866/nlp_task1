@@ -1,10 +1,14 @@
 import os
 import shutil
+import json
+
 import pynlpir
 import thulac
 import pkuseg
 import jieba
 import jieba.posseg as pseg
+
+from tqdm import tqdm
 
 
 pynlpir.open()
@@ -36,19 +40,25 @@ class frame:
     # 支持切片换行（最后一行不换行）、对象等数据结构的写入
     # 以utf-8编码保存
     def writeFile(self, filePath, content):
-        if type(content).__name__ == 'list':
+        typeName = type(content).__name__
+        if typeName == 'list':
             with open(filePath, 'w+', encoding='utf-8') as f:
                 f.write(str(content[0]))
                 for i in range(len(content)-1):
                     f.write(','+str(content[i+1]))
             return
-        print(type(content))
+        elif typeName == 'dict':
+            json.dump(content, open(filePath, 'w+', encoding='utf-8'), indent=2, ensure_ascii=False)
+            return
+        
+        print(typeName)
 
     # 打开GB18030编码的文本文件
     def readGB18030File(self, filePath):
         str = ''
         with open(filePath, 'r', encoding='GB18030', errors='ignore') as f:
             for i in f.readlines():
+                # Todo： 正文提取
                 str += i
         return str
     
@@ -68,14 +78,20 @@ class nlpTask(frame):
         self.NLPIRChoose = [] #['noun', 'verb', 'adjective', 'adverb']
         self.NLPIRIgnore = [None, 'preposition', 'conjunction', 'particle', '', 'punctuation mark']
         # thu
-        self.thuChoose = []
-        self.thuIgnore = []
+        self.thulChoose = []
+        self.thulIgnore = [None,'c','w','p','u','e','o','y']
         # pku
         self.pkuChoose = []
-        self.pkuIgnore = []
+        self.pkuIgnore = [None,'c','w','p','u','e','o','y']
         # jieba-paddle
         self.jiebaChoose = []
         self.jiebaIgnore = []
+
+        # 数据集词表
+        self.wordsMap = {
+            'words': [],
+            'globalWords': []
+        }
 
         # 是否已加载处理完成数据
         self.isProcessed = False
@@ -131,63 +147,92 @@ class nlpTask(frame):
     # 中文分词+虚词过滤
     # 参数说明
     # mode: 使用分词工具的类型，可选参数为['NLPIR', 'thul', 'pku', 'jieba']
-    def preProcessing(self, mode):
-        if os.path.exists(self.preProcessingDir):
+    # needSplitResult：是否需要输出分词结果，默认值False
+    def preProcessing(self, mode, needSplitResult=False):
+        if needSplitResult and os.path.exists(self.preProcessingDir):
             if self.modal('【警告】此操作将删除processing/preProcessing文件夹内所有内容。'):
                 shutil.rmtree(self.preProcessingDir)
             else:
                 print('用户已取消操作')
                 exit(1)
-            
-        for dir in self.dirList:
+
+        print('-----开始进行预处理-----')
+        categoryCount = len(self.dirList)
+        for (catagoryId, dir) in enumerate(self.dirList):
+            label = self.labels[catagoryId]
+            self.wordsMap[label] = []
+
             newDir = os.path.join(self.datasetDir, dir)
             newCreateDir = os.path.join(self.preProcessingDir, dir)
-            os.makedirs(newCreateDir)
+            if needSplitResult:
+                os.makedirs(newCreateDir)
 
-            for file in self.listDir(newDir):
+            filesInDir = self.listDir(newDir)
+            pbar = tqdm(filesInDir)
+
+            for (fileId, _) in enumerate(pbar):
+                pbar.set_description(f"{catagoryId+1}/{categoryCount}")
+
+                file = filesInDir[fileId]
                 fileContent = self.readGB18030File(os.path.join(newDir, file))
+
+                # 正则处理空格与换行
+                fileContent = fileContent.replace(' ', '')
+                fileContent = fileContent.replace('\n', '')
+
+                ruleChoose = []
+                ruleIgnore = []
+                splitWord = []
                 saveWords = []
+
+                # 分词
                 if mode == 'NLPIR':
+                    ruleChoose = self.NLPIRChoose
+                    ruleIgnore = self.NLPIRIgnore
                     splitWord = self.NLPIRSeg(fileContent)
-                    for word in splitWord:
-                        if len(self.NLPIRChoose) != 0:
-                            if word[1] in self.NLPIRChoose:
-                                saveWords.append(word[0].replace('\n', ''))
-                        else:
-                            if word[1] not in self.NLPIRIgnore:
-                                saveWords.append(word[0].replace('\n', ''))
                 elif mode == 'thul':
+                    ruleChoose = self.thulChoose
+                    ruleIgnore = self.thulIgnore
                     splitWord = self.thulSeg(fileContent)
-                    for word in splitWord:
-                        if len(self.thulChoose) != 0:
-                            if word[1] in self.thulChoose:
-                                saveWords.append(word[0].replace('\n', ''))
-                        else:
-                            if word[1] not in self.thulIgnore:
-                                saveWords.append(word[0].replace('\n', ''))
                 elif mode == 'pku':
+                    ruleChoose = self.pkuChoose
+                    ruleIgnore = self.pkuIgnore
                     splitWord = self.pkuSeg(fileContent)
-                    for word in splitWord:
-                        if len(self.pkuChoose) != 0:
-                            if word[1] in self.pkuChoose:
-                                saveWords.append(word[0].replace('\n', ''))
-                        else:
-                            if word[1] not in self.pkuIgnore:
-                                saveWords.append(word[0].replace('\n', ''))
                 elif mode == 'jieba':
+                    ruleChoose = self.jiebaChoose
+                    ruleIgnore = self.jiebaIgnore
                     splitWord = self.jiebaSeg(fileContent)
-                    for word in splitWord:
-                        if len(self.jiebaChoose) != 0:
-                            if word[1] in self.jiebaChoose:
-                                saveWords.append(word[0].replace('\n', ''))
-                        else:
-                            if word[1] not in self.jiebaIgnore:
-                                saveWords.append(word[0].replace('\n', ''))
                 else:
-                    print('输入有误，分词失败')
+                    print('参数错误：暂不支持{}，分词失败'.format(mode))
                     exit(1)
-                self.writeFile(os.path.join(newCreateDir, file), saveWords)
-            
+                
+                # 按词性进行过滤
+                for word in splitWord:
+                    # 若len(ruleChoose)不为0则使用白名单模式，否则黑名单模式
+                    if (len(ruleChoose) != 0 and word[1] in ruleChoose) or \
+                            (len(ruleChoose) == 0 and word[1] not in ruleIgnore):
+                        # 若需输出中间结果
+                        if needSplitResult:
+                            saveWords.append(word[0])
+                        
+                        # 查看词表中是否出现过该单词
+                        p = self.wordsMap['words'].index(word[0]) if word[0] in self.wordsMap['words'] else -1
+                        if p == -1:
+                            self.wordsMap['words'].append(word[0])
+                            self.wordsMap['globalWords'].append(0)
+                            p = len(self.wordsMap['words'])-1
+                        
+                        # 补齐文章列表至p处
+                        for i in range(max(0, p+1-len(self.wordsMap[label]))):
+                            self.wordsMap[label].append(0)
+                        
+                        self.wordsMap[label][p] += 1
+                        self.wordsMap['globalWords'][p] += 1
+                
+                if needSplitResult:
+                    self.writeFile(os.path.join(newCreateDir, file), saveWords)
+
+        self.writeFile('wordsMap.json', self.wordsMap)
 
 # 任务1.1 文本分类系统
 class classifyNLP(nlpTask):
@@ -201,10 +246,6 @@ class queryNLP(nlpTask):
 
 if __name__ == '__main__':
     classifyTask = classifyNLP('./data/train', True)
-
-    # print(classifyTask.thulSeg(classifyTask.readGB18030File('./data/train/1/1 (1).txt')))
-    # print(classifyTask.pkuSeg(classifyTask.readGB18030File('./data/train/1/1 (1).txt')))
-    # print(classifyTask.jiebaSeg(classifyTask.readGB18030File('./data/train/1/1 (1).txt')))
     
-    # classifyTask.preProcessing('NLPIR')
-    # classifyTask.process()
+    classifyTask.preProcessing('NLPIR', True)
+    classifyTask.process()
