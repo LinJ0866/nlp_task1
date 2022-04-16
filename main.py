@@ -97,7 +97,7 @@ class nlpTask(frame):
         self.pkuIgnore = [None,'c','w','p','u','e','o','y']
         # jieba-paddle
         self.jiebaChoose = []
-        self.jiebaIgnore = []
+        self.jiebaIgnore = [None,'c','w','p','u','e','o','y']
 
         # 数据集词表
         self.wordsMap = {
@@ -168,7 +168,8 @@ class nlpTask(frame):
             print('----预处理词表加载完成----')
             return
         
-        print('-----开始进行预处理-----')
+        if os.path.exists('processing/wordsMap.json'):
+            print('-----开始进行预处理-----')
         shutil.rmtree(self.preProcessingDir)
         categoryCount = len(self.dirList)
         for (catagoryId, dir) in enumerate(self.dirList):
