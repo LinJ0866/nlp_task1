@@ -1,3 +1,6 @@
 data
-processing
-result.txt
+processing*
+result*.txt
+data_query
+processing_query
+labels*.txt

@@ -1,4 +1,4 @@
-# NLP任务1
+# NLP任务1 · 文本分类系统
 
 ## 数据集说明
 
@@ -13,8 +13,6 @@
 ## 任务概述
 
 ![task_classification](doc/task_classification.png)
-
-![task_query](doc/task_query.png)
 
 
 ## Todos
@@ -43,3 +41,20 @@
 ### 分类器
 
 说明工作量
+
+
+- 词频
+- 词文档频
+
+
+- tfSum
+- docSum
+- labels
+- count
+- words
+- [label]
+  - tf
+  - df
+
+
+不要写错循环了！
