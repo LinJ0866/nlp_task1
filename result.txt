@@ -1,143 +1,43 @@
 文件                                                          ：预测，标签
-./data_query/train\18\18 (73).txt                           ：柔道，摔跤
-./data_query/train\19\19 (57).txt                           ：搏击，跆拳道
-./data_query/train\1\1 (9).txt                              ：网球，棒球
-./data_query/train\15\15 (150).txt                          ：射箭，射击
-./data_query/train\1\1 (23).txt                             ：游泳，棒球
-./data_query/train\14\14 (2).txt                            ：重剑，赛艇
-./data_query/train\12\12 (67).txt                           ：跆拳道，搏击
-./data_query/train\14\14 (16).txt                           ：游泳，赛艇
-./data_query/train\23\23 (93).txt                           ：乒乓球，游泳
-./data_query/train\13\13 (38).txt                           ：摔跤，柔道
-./data_query/train\24\24 (36).txt                           ：搏击，羽毛球
-./data_query/train\26\26 (184).txt                          ：曲棍球，足球
-./data_query/train\11\11 (38).txt                           ：羽毛球，曲棍球
-./data_query/train\17\17 (77).txt                           ：射箭，手球
-./data_query/train\7\7 (22).txt                             ：羽毛球，马术
-./data_query/train\18\18 (8).txt                            ：柔道，摔跤
-./data_query/train\3\3 (119).txt                            ：篮球，重剑
-./data_query/train\23\23 (54).txt                           ：田径，游泳
-./data_query/train\15\15 (122).txt                          ：足球，射击
-./data_query/train\19\19 (61).txt                           ：田径，跆拳道
-./data_query/train\5\5 (150).txt                            ：马术，篮球
-./data_query/train\5\5 (6).txt                              ：棒球，篮球
-./data_query/train\6\6 (123).txt                            ：手球，垒球
-./data_query/train\11\11 (149).txt                          ：网球，曲棍球
-./data_query/train\12\12 (64).txt                           ：跆拳道，搏击
-./data_query/train\4\4 (126).txt                            ：自行车，举重
-./data_query/train\6\6 (122).txt                            ：摔跤，垒球
-./data_query/train\5\5 (139).txt                            ：摔跤，篮球
-./data_query/train\3\3 (132).txt                            ：排球，重剑
-./data_query/train\4\4 (10).txt                             ：搏击，举重
-./data_query/train\25\25 (28).txt                           ：举重，自行车
-./data_query/train\18\18 (86).txt                           ：网球，摔跤
-./data_query/train\9\9 (66).txt                             ：赛艇，皮划艇
-./data_query/train\21\21 (100).txt                          ：射击，田径
-./data_query/train\1\1 (4).txt                              ：垒球，棒球
-./data_query/train\18\18 (5).txt                            ：柔道，摔跤
-./data_query/train\11\11 (2).txt                            ：手球，曲棍球
-./data_query/train\4\4 (119).txt                            ：田径，举重
-./data_query/train\2\2 (75).txt                             ：皮划艇，帆船帆板
-./data_query/train\25\25 (85).txt                           ：重剑，自行车
-./data_query/train\5\5 (33).txt                             ：足球，篮球
-./data_query/train\15\15 (113).txt                          ：射箭，射击
-./data_query/train\12\12 (150).txt                          ：柔道，搏击
-./data_query/train\14\14 (59).txt                           ：皮划艇，赛艇
-./data_query/train\11\11 (5).txt                            ：手球，曲棍球
-./data_query/train\6\6 (57).txt                             ：棒球，垒球
-./data_query/train\10\10 (143).txt                          ：曲棍球，乒乓球
-./data_query/train\2\2 (91).txt                             ：赛艇，帆船帆板
-./data_query/train\9\9 (17).txt                             ：赛艇，皮划艇
-./data_query/train\15\15 (166).txt                          ：射箭，射击
-./data_query/train\14\14 (5).txt                            ：皮划艇，赛艇
-./data_query/train\11\11 (138).txt                          ：手球，曲棍球
-./data_query/train\13\13 (115).txt                          ：摔跤，柔道
-./data_query/train\18\18 (71).txt                           ：曲棍球，摔跤
-./data_query/train\1\1 (112).txt                            ：曲棍球，棒球
-./data_query/train\13\13 (130).txt                          ：摔跤，柔道
-./data_query/train\14\14 (43).txt                           ：帆船帆板，赛艇
-./data_query/train\3\3 (120).txt                            ：篮球，重剑
-./data_query/train\9\9 (9).txt                              ：赛艇，皮划艇
-./data_query/train\6\6 (63).txt                             ：棒球，垒球
-./data_query/train\23\23 (56).txt                           ：足球，游泳
-./data_query/train\3\3 (133).txt                            ：排球，重剑
-./data_query/train\9\9 (48).txt                             ：赛艇，皮划艇
-./data_query/train\18\18 (4).txt                            ：跆拳道，摔跤
-./data_query/train\2\2 (28).txt                             ：乒乓球，帆船帆板
-./data_query/train\3\3 (39).txt                             ：足球，重剑
-./data_query/train\6\6 (4).txt                              ：棒球，垒球
-./data_query/train\19\19 (52).txt                           ：搏击，跆拳道
-./data_query/train\3\3 (123).txt                            ：手球，重剑
-./data_query/train\14\14 (72).txt                           ：皮划艇，赛艇
-./data_query/train\4\4 (95).txt                             ：乒乓球，举重
-./data_query/train\2\2 (6).txt                              ：重剑，帆船帆板
-./data_query/train\19\19 (44).txt                           ：柔道，跆拳道
-./data_query/train\18\18 (13).txt                           ：柔道，摔跤
-./data_query/train\8\8 (139).txt                            ：跆拳道，排球
-./data_query/train\25\25 (99).txt                           ：摔跤，自行车
-./data_query/train\14\14 (118).txt                          ：皮划艇，赛艇
-./data_query/train\2\2 (76).txt                             ：皮划艇，帆船帆板
-./data_query/train\16\16 (71).txt                           ：游泳，射箭
-./data_query/train\6\6 (126).txt                            ：棒球，垒球
-./data_query/train\26\26 (173).txt                          ：曲棍球，足球
-./data_query/train\18\18 (106).txt                          ：搏击，摔跤
-./data_query/train\16\16 (55).txt                           ：射击，射箭
-./data_query/train\17\17 (9).txt                            ：排球，手球
-./data_query/train\12\12 (73).txt                           ：跆拳道，搏击
-./data_query/train\9\9 (22).txt                             ：赛艇，皮划艇
-./data_query/train\3\3 (82).txt                             ：排球，重剑
-./data_query/train\17\17 (1).txt                            ：田径，手球
-./data_query/train\4\4 (38).txt                             ：田径，举重
-./data_query/train\17\17 (13).txt                           ：曲棍球，手球
-./data_query/train\21\21 (192).txt                          ：游泳，田径
-./data_query/train\2\2 (98).txt                             ：赛艇，帆船帆板
-./data_query/train\4\4 (7).txt                              ：跆拳道，举重
-./data_query/train\6\6 (16).txt                             ：棒球，垒球
-./data_query/train\15\15 (91).txt                           ：射箭，射击
-./data_query/train\11\11 (121).txt                          ：垒球，曲棍球
-./data_query/train\11\11 (142).txt                          ：羽毛球，曲棍球
-./data_query/train\18\18 (57).txt                           ：足球，摔跤
-./data_query/train\11\11 (131).txt                          ：垒球，曲棍球
-./data_query/train\24\24 (64).txt                           ：乒乓球，羽毛球
-./data_query/train\9\9 (58).txt                             ：赛艇，皮划艇
-./data_query/train\4\4 (0).txt                              ：摔跤，举重
-./data_query/train\12\12 (31).txt                           ：田径，搏击
-./data_query/train\19\19 (28).txt                           ：搏击，跆拳道
-./data_query/train\25\25 (17).txt                           ：网球，自行车
-./data_query/train\15\15 (30).txt                           ：重剑，射击
-./data_query/train\26\26 (246).txt                          ：赛艇，足球
-./data_query/train\16\16 (73).txt                           ：射击，射箭
-./data_query/train\20\20 (52).txt                           ：射击，体操
-./data_query/train\7\7 (57).txt                             ：摔跤，马术
-./data_query/train\4\4 (8).txt                              ：田径，举重
-./data_query/train\12\12 (72).txt                           ：跆拳道，搏击
-./data_query/train\15\15 (18).txt                           ：重剑，射击
-./data_query/train\3\3 (118).txt                            ：排球，重剑
-./data_query/train\19\19 (53).txt                           ：摔跤，跆拳道
-./data_query/train\24\24 (0).txt                            ：乒乓球，羽毛球
-./data_query/train\21\21 (173).txt                          ：游泳，田径
-./data_query/train\17\17 (52).txt                           ：曲棍球，手球
-./data_query/train\8\8 (161).txt                            ：足球，排球
-./data_query/train\5\5 (96).txt                             ：乒乓球，篮球
-./data_query/train\21\21 (185).txt                          ：足球，田径
-./data_query/train\21\21 (61).txt                           ：重剑，田径
-./data_query/train\15\15 (57).txt                           ：排球，射击
-./data_query/train\5\5 (85).txt                             ：垒球，篮球
-./data_query/train\4\4 (2).txt                              ：乒乓球，举重
-./data_query/train\4\4 (128).txt                            ：柔道，举重
-./data_query/train\9\9 (12).txt                             ：帆船帆板，皮划艇
-./data_query/train\3\3 (145).txt                            ：排球，重剑
-./data_query/train\15\15 (88).txt                           ：射箭，射击
-./data_query/train\6\6 (5).txt                              ：手球，垒球
-./data_query/train\23\23 (183).txt                          ：田径，游泳
-./data_query/train\23\23 (51).txt                           ：田径，游泳
-./data_query/train\18\18 (81).txt                           ：柔道，摔跤
-./data_query/train\21\21 (320).txt                          ：网球，田径
-./data_query/train\11\11 (96).txt                           ：垒球，曲棍球
-./data_query/train\13\13 (106).txt                          ：搏击，柔道
-./data_query/train\7\7 (53).txt                             ：重剑，马术
-./data_query/train\14\14 (7).txt                            ：皮划艇，赛艇
-./data_query/train\3\3 (66).txt                             ：排球，重剑
-./data_query/train\11\11 (129).txt                          ：足球，曲棍球
-./data_query/train\23\23 (126).txt                          ：田径，游泳
-./data_query/train\10\10 (116).txt                          ：自行车，乒乓球
+./data/test\C3-Art\C3-Art0002.txt                           ：Economy，Art
+./data/test\C3-Art\C3-Art0043.txt                           ：Politics，Art
+./data/test\C3-Art\C3-Art0139.txt                           ：Politics，Art
+./data/test\C3-Art\C3-Art0147.txt                           ：Sports，Art
+./data/test\C3-Art\C3-Art0159.txt                           ：Politics，Art
+./data/test\C19-Computer\C19-Computer0122.txt               ：Sports，Computer
+./data/test\C19-Computer\C19-Computer0146.txt               ：Environment，Computer
+./data/test\C19-Computer\C19-Computer0182.txt               ：Politics，Computer
+./data/test\C31-Enviornment\C31-Enviornment0062.txt         ：Economy，Environment
+./data/test\C31-Enviornment\C31-Enviornment0064.txt         ：Economy，Environment
+./data/test\C31-Enviornment\C31-Enviornment0146.txt         ：Economy，Environment
+./data/test\C34-Economy\C34-Economy0012.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0014.txt                 ：Sports，Economy
+./data/test\C34-Economy\C34-Economy0016.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0058.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0066.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0083.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0095.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0136.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0146.txt                 ：Environment，Economy
+./data/test\C34-Economy\C34-Economy0148.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0154.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0160.txt                 ：Art，Economy
+./data/test\C34-Economy\C34-Economy0174.txt                 ：Politics，Economy
+./data/test\C34-Economy\C34-Economy0176.txt                 ：Environment，Economy
+./data/test\C34-Economy\C34-Economy0180.txt                 ：Computer，Economy
+./data/test\C38-Politics\C38-Politics0014.txt               ：Economy，Politics
+./data/test\C38-Politics\C38-Politics0025.txt               ：Economy，Politics
+./data/test\C38-Politics\C38-Politics0033.txt               ：Art，Politics
+./data/test\C38-Politics\C38-Politics0037.txt               ：Art，Politics
+./data/test\C38-Politics\C38-Politics0094.txt               ：Sports，Politics
+./data/test\C38-Politics\C38-Politics0104.txt               ：Economy，Politics
+./data/test\C38-Politics\C38-Politics0136.txt               ：Economy，Politics
+./data/test\C38-Politics\C38-Politics0138.txt               ：Sports，Politics
+./data/test\C38-Politics\C38-Politics0146.txt               ：Sports，Politics
+./data/test\C38-Politics\C38-Politics0191.txt               ：Economy，Politics
+./data/test\C39-Sports\C39-Sports0043.txt                   ：Environment，Sports
+./data/test\C39-Sports\C39-Sports0059.txt                   ：Environment，Sports
+./data/test\C39-Sports\C39-Sports0086.txt                   ：Environment，Sports
+./data/test\C39-Sports\C39-Sports0119.txt                   ：Computer，Sports
+./data/test\C39-Sports\C39-Sports0178.txt                   ：Environment，Sports
+./data/test\C39-Sports\C39-Sports0190.txt                   ：Politics，Sports

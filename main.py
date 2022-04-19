@@ -15,6 +15,8 @@ from tqdm import tqdm
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
 from sklearn.naive_bayes import GaussianNB
+from sklearn import tree
+from sklearn.neural_network import MLPClassifier
 
 
 pynlpir.open()
@@ -95,7 +97,8 @@ class classifyNLP(frame):
     # mode: 分词工具,使用分词工具的类型，可选参数为['NLPIR', 'thul', 'pku', 'jieba']
     # featureSelectionMode：使用特征选择的方法，可选参数为['IG', 'MI', 'CHI']
     # featureCalMode：使用特征权重计算的方法，可选参数为['TF-IDF', 'TF', 'IDF']
-    def __init__(self, trainPath, testPath, testRatio=0.3, randomState=None, processingPath='./processing', mode='NLPIR', featureSelectionMode='IG', featureCalMode="TF-IDF"):
+    # modelMode：使用分类器的方法，可选参数为['GaussianNB', 'tree', 'MLP']
+    def __init__(self, trainPath, testPath, testRatio=0.3, randomState=None, processingPath='./processing', mode='NLPIR', featureSelectionMode='IG', featureCalMode="TF-IDF", modelMode='GaussianNB'):
         # 词性筛选表，若choose为空，则采用黑名单
         # NLPIR
         self.NLPIRChoose = [] #['noun', 'verb', 'adjective', 'adverb']
@@ -118,6 +121,7 @@ class classifyNLP(frame):
         self.mode = mode # mode: 使用分词工具的类型，可选参数为['NLPIR', 'thul', 'pku', 'jieba']
         self.featureSelectionMode = featureSelectionMode # mode：使用特征选择的方法，可选参数为['IG', 'MI', 'CHI']
         self.featureCalMode = featureCalMode # mode:使用特征权重计算的方法，可选参数为['TF-IDF', 'TF', 'IDF']
+        self.modelMode = modelMode
 
         self.labels = []
         # 训练集数据集词表
@@ -666,9 +670,26 @@ class classifyNLP(frame):
         json.dump(fileFeatures, open(featuresPath, 'w+', encoding="utf-8"), indent=2, ensure_ascii=False)
         print('----特征计算完成---')
         
+    def train(self):
+        if self.modelMode == 'GaussianNB':
+            self.trainGaussianNB()
+        elif self.modelMode == 'tree':
+            self.trainTree()
+        elif self.modelMode == 'MLP':
+            self.trainMLP()
+    
     def trainGaussianNB(self):
         gnb = GaussianNB()
         self.y_pred = gnb.fit(self.X_train, self.y_train).predict(self.X_test)
+    
+    def trainTree(self):
+        clf = tree.DecisionTreeClassifier()
+        self.y_pred = clf.fit(self.X_train, self.y_train).predict(self.X_test)
+    
+    def trainMLP(self):
+        clf = MLPClassifier(solver='lbfgs', alpha=1e-5,
+                hidden_layer_sizes=(20, 10), random_state=1)
+        self.y_pred = clf.fit(self.X_train, self.y_train).predict(self.X_test)
 
     def calError(self):
         micro = [0, 0, 0, 0]
@@ -727,35 +748,22 @@ class classifyNLP(frame):
         r = micro[0]/(micro[0]+micro[1])
         print('MicroP is {}, MicroR is {}, MicroF1 is {}'.format(p, r, 2*p*r/(p+r)))
         print('MacroP is {}, MacroR is {}, MacroF1 is {}'.format(macro[0], macro[1], macro[2]))
-
-    def process(self):
-        self.featureSelectionIG()
-        self.featureCalTFIDF()
-        self.trainGaussianNB()
-        self.calError()
-
-
-class classifyNLPWithClassifyDataset(classifyNLP):
-    def sortDirList(self, dirList):
-        if dirList[0].isdigit():
-            dirList.sort(key=lambda x:int(x))
-        return dirList
     
 
     # 参数说明
-    # ratio：表示测试集比例，若testPath为None，将划分训练集
+    # testRatio：表示测试集比例，若testPath为None，将划分训练集
     # ramdonState：用于划分数据集，None表示纯随机
     # processingPath：处理中间文件存放处
     # mode: 分词工具,使用分词工具的类型，可选参数为['NLPIR', 'thul', 'pku', 'jieba']
     # featureSelectionMode：使用特征选择的方法，可选参数为['IG', 'MI', 'CHI']
     # featureCalMode：使用特征权重计算的方法，可选参数为['TF-IDF', 'TF', 'IDF']
-
+    # modelMode：使用分类器的方法，可选参数为['GaussianNB', 'tree', 'MLP']
 if __name__ == '__main__':
-    classifyTask = classifyNLP('./data/train', '/data/test')
+    classifyTask = classifyNLP('./data/train', '/data/test', mode="NLPIR", featureSelectionMode='IG', featureCalMode="TF-IDF", modelMode="MLP")
     
     classifyTask.preProcessing()
     classifyTask.featureSelection()
     classifyTask.featureCal('train')
     classifyTask.featureCal('test')
-    classifyTask.trainGaussianNB()
+    classifyTask.train()
     classifyTask.calError()
